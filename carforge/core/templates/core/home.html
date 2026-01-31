@@ -1,74 +1,7 @@
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Django Tailwind</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    {% tailwind_css %}
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#137fec",
-                        "background-light": "#f6f7f8",
-                        "background-dark": "#101922",
-                    },
-                    
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-
-<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased overflow-x-hidden">
-    <!-- Main Container -->
-    <div class="relative min-h-screen w-full flex flex-col">
-        <!-- Navigation -->
-        <header class="absolute top-0 left-0 w-full z-50 px-6 py-6 md:px-12 lg:px-20 transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <img src="{% static "core/logo/logo-white.png" %}" alt="Logo" class="h-6">
-                </div>
-                <!-- Desktop Nav -->
-                <nav class="hidden md:flex items-center gap-12">
-                    <a class="text-white/80 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors" href="#">Models</a>
-                    <a class="text-white/80 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors" href="#">Technology</a>
-                    <a class="text-white/80 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors" href="#">Ownership</a>
-                    <a class="text-white/80 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors" href="#">About</a>
-                </nav>
-                <!-- Actions -->
-                <div class="flex items-center gap-6">
-                    <button class="hidden lg:flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium tracking-widest uppercase transition-colors">
-                        <span class="material-symbols-outlined text-xl">person</span>
-                        <span>Sign In</span>
-                    </button>
-                    <button class="md:hidden text-white">
-                        <span class="material-symbols-outlined text-3xl">menu</span>
-                    </button>
-                </div>
-            </div>
-        </header>
-        <!-- Hero Section -->
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Hero Section -->
         <main class="relative flex-grow flex items-center min-h-screen">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0">
@@ -160,9 +93,4 @@
                 </div>
             </div> {% endcomment %}
         </main>
-    </div>
-</body>
-
-
-</body>
-</html>
+{% endblock  %}
