@@ -8,3 +8,11 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
+:root {
+  body {
+    font-family: "Roboto", sans-serif;
+  }
+  .jost {
+    font-family: "Jost", sans-serif;
+  }
+}
