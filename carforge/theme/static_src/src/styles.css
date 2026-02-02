@@ -8,11 +8,34 @@
   * the scope of this path.
   */
 @source "../../../**/*.{html,py,js}";
-:root {
-  body {
-    font-family: "Roboto", sans-serif;
-  }
-  .jost {
-    font-family: "Jost", sans-serif;
+@layer base {
+  :root {
+    color-scheme: light dark;
   }
 }
+
+
+@theme {
+  --color-primary: #2b8cee;
+  --color-background-light: #f6f7f8;
+  --color-background-dark: #101922;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Noto Sans", sans-serif;
+
+  --radius: 0.25rem;       /* DEFAULT */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+
