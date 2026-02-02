@@ -10,3 +10,4 @@ class DesignAdmin(admin.ModelAdmin):
     list_display = ("id", "thumbnail","title", "is_active")
     list_display_links = ("title", "thumbnail",)
     search_fields = ("title",)
+    list_filter = ("is_active",)
