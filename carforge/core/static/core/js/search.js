@@ -14,3 +14,84 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    let slideInterval;
+
+    function showSlide(index) {
+      // Ensure index is within bounds
+      if (index < 0) index = totalSlides - 1;
+      if (index >= totalSlides) index = 0;
+      currentIndex = index;
+
+      // Update slides
+      slides.forEach((slide, i) => {
+        if (i === currentIndex) {
+          slide.classList.remove('opacity-0');
+          slide.classList.add('opacity-100');
+        } else {
+          slide.classList.remove('opacity-100');
+          slide.classList.add('opacity-0');
+        }
+      });
+
+      // Update indicators
+      indicators.forEach((indicator, i) => {
+        if (i === currentIndex) {
+          indicator.classList.remove('h-3', 'bg-white/30');
+          indicator.classList.add('h-12', 'bg-primary');
+        } else {
+          indicator.classList.remove('h-12', 'bg-primary');
+          indicator.classList.add('h-3', 'bg-white/30');
+        }
+      });
+    }
+
+    function nextSlide() {
+      showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentIndex - 1);
+    }
+
+    // Event Listeners
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetInterval();
+    });
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetInterval();
+    });
+
+    indicators.forEach(indicator => {
+      indicator.addEventListener('click', (e) => {
+        const index = parseInt(e.target.dataset.index);
+        showSlide(index);
+        resetInterval();
+      });
+    });
+
+    // Auto-play
+    function startInterval() {
+      slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    function resetInterval() {
+      clearInterval(slideInterval);
+      startInterval();
+    }
+
+    if (totalSlides > 1) {
+      startInterval();
+    }
+  });

@@ -1,212 +1,248 @@
 {% extends "base.html" %}
 {% block content %}
-    
-    <!-- ===== MAIN HERO SECTION ===== -->
-    <!-- Full-screen hero with background image, carousel, and search functionality -->
-    <main class="relative flex-grow flex flex-col w-full h-screen min-h-[700px] overflow-hidden">
-      <!-- Background Layer with Image & Gradient Overlay -->
-      <div class="absolute inset-0 z-0">
-        <!-- Hero Background Image with Dark Gradient Overlay -->
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700" style='background-image: linear-gradient(rgba(16, 25, 34, 0.4) 0%, rgba(16, 25, 34, 0.2) 30%, rgba(16, 25, 34, 0.8) 100%), url("{{hero.image.url}}");'></div>
-        
-        <!-- Left Arrow Navigation Button -->
-        <div class="absolute inset-y-0 left-4 lg:left-8 flex items-center z-20">
-          <button class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
-            <span class="material-symbols-outlined">chevron_left</span>
-          </button>
-        </div>
-        
-        <!-- Right Arrow Navigation Button -->
-        <div class="absolute inset-y-0 right-4 lg:right-8 flex items-center z-20">
-          <button class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
-            <span class="material-symbols-outlined">chevron_right</span>
-          </button>
-        </div>
-        
-        <!-- Carousel Slide Indicators (Desktop Only) -->
-        <div class="absolute right-8 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-4">
-          <div class="w-1 h-12 bg-primary rounded-full"></div>
-          <div class="w-1 h-3 bg-white/30 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
-          <div class="w-1 h-3 bg-white/30 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
-          <div class="w-1 h-3 bg-white/30 rounded-full hover:bg-white transition-colors cursor-pointer"></div>
-        </div>
-      </div>
 
-      <!-- ===== HERO CONTENT ===== -->
-      <!-- Headline, description, and search form -->
-      <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 pt-12">
-        <!-- Hero Headline Section -->
-        <div class="mb-12">
-          <span class="text-primary text-sm font-bold tracking-[0.2em] uppercase mb-4 block">The New Standard</span>
-          <h1 class="text-white text-5xl md:text-7xl lg:text-9xl font-black leading-none tracking-tighter uppercase drop-shadow-2xl">
-            Beyond<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">Velocity</span>
-          </h1>
-          <p class="mt-6 text-white/80 text-lg md:text-xl font-light max-w-2xl tracking-wide mx-auto">
-            Discover our exclusive collection of performance vehicles designed for the modern era.
-          </p>
-        </div>
+<!-- ===== MAIN HERO SECTION ===== -->
+<!-- Full-screen hero with background image, carousel, and search functionality -->
+<main class="relative flex-grow flex flex-col w-full h-screen min-h-[700px] overflow-hidden">
+  <!-- Background Layer with Image & Gradient Overlay -->
+  <!-- Background Layer with Image & Gradient Overlay -->
+  <div class="absolute inset-0 z-0" id="hero-carousel">
+    {% for hero in heroes %}
+    <!-- Hero Background Image with Dark Gradient Overlay -->
+    <div
+      class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out {% if not forloop.first %}opacity-0{% else %}opacity-100{% endif %}"
+      style='background-image: linear-gradient(rgba(16, 25, 34, 0.4) 0%, rgba(16, 25, 34, 0.2) 10%, rgba(16, 25, 34, 0.8) 40%), url("{{hero.image.url}}");'
+      data-index="{{ forloop.counter0 }}">
+    </div>
+    {% endfor %}
+  </div>
 
-        <!-- ===== DESKTOP SEARCH FORM ===== -->
-        <!-- Advanced search filter (hidden on mobile) -->
-        <div class="hidden lg:block w-full max-w-[1100px] mb-8">
-          <div class="glass-panel p-2 rounded-2xl shadow-2xl shadow-black/40 bg-background-dark border border-white/10">
-            <!-- Search Form with Multiple Filters -->
-            <form class="flex items-center divide-x divide-white/10">
-              <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors rounded-l-xl">
-                <!-- Model Filter -->
-                <label class="flex flex-col text-left">
-                  <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
-                    <span class="material-symbols-outlined text-[14px]">directions_car</span>
-                    Model
-                  </span>
-                  <select class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
-                    <option class="text-black" disabled="" selected="" value="">Select Model</option>
-                    <option class="text-black" value="model-s">Model S Plaid</option>
-                    <option class="text-black" value="taycan">Porsche Taycan</option>
-                    <option class="text-black" value="etron">Audi e-tron GT</option>
-                  </select>
-                </label>
-              </div>
-              
-              <!-- Location Filter -->
-              <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors">
-                <label class="flex flex-col text-left">
-                  <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
-                    <span class="material-symbols-outlined text-[14px]">location_on</span>
-                    Location
-                  </span>
-                  <select class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
-                    <option class="text-black" disabled="" selected="" value="">All Locations</option>
-                    <option class="text-black" value="ny">New York, NY</option>
-                    <option class="text-black" value="la">Los Angeles, CA</option>
-                    <option class="text-black" value="mia">Miami, FL</option>
-                  </select>
-                </label>
-              </div>
-              
-              <!-- Price Range Filter -->
-              <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors">
-                <label class="flex flex-col text-left">
-                  <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
-                    <span class="material-symbols-outlined text-[14px]">attach_money</span>
-                    Price Range
-                  </span>
-                  <select class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
-                    <option class="text-black" disabled="" selected="" value="">Max Price</option>
-                    <option class="text-black" value="50k">$50,000</option>
-                    <option class="text-black" value="100k">$100,000</option>
-                    <option class="text-black" value="200k">$200,000+</option>
-                  </select>
-                </label>
-              </div>
-              
-              <!-- Keywords Filter -->
-              <div class="flex-[1.5] px-4 py-3 group hover:bg-white/5 transition-colors">
-                <label class="flex flex-col text-left">
-                  <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
-                    <span class="material-symbols-outlined text-[14px]">search</span>
-                    Keywords
-                  </span>
-                  <input class="w-full bg-transparent border-none p-0 text-white font-medium placeholder:text-white/30 focus:ring-0 text-sm" placeholder="e.g. Matte Black" type="text"/>
-                </label>
-              </div>
-              
-              <!-- Search Submit Button -->
-              <div class="px-3 py-1">
-                <button class="h-12 w-12 flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-lg shadow-primary/20" type="button">
-                  <span class="material-symbols-outlined">search</span>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+  <!-- Left Arrow Navigation Button -->
+  <div class="absolute inset-y-0 left-4 lg:left-8 flex items-center z-20 pointer-events-none">
+    <button id="prev-slide"
+      class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors z-30 cursor-pointer pointer-events-auto">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+  </div>
 
-        <!-- CTA Button -->
-        <button class="group flex items-center gap-2 text-white border-b border-white pb-1 hover:text-primary hover:border-primary transition-colors">
-          <span class="text-sm font-bold uppercase tracking-widest">Explore Collection</span>
-          <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-        </button>
-      </div>
+  <!-- Right Arrow Navigation Button -->
+  <div class="absolute inset-y-0 right-4 lg:right-8 flex items-center z-20 pointer-events-none">
+    <button id="next-slide"
+      class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors z-30 cursor-pointer pointer-events-auto">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
 
-      <div class="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-30">
-        <label class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl shadow-primary/60 active:scale-90 transition-transform cursor-pointer" for="search-toggle">
-          <span class="material-symbols-outlined text-2xl">search</span>
-        </label>
-      </div>
+  <!-- Carousel Slide Indicators (Desktop Only) -->
+  <div class="absolute right-8 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-4 pointer-events-none"
+    id="carousel-indicators">
+    {% for hero in heroes %}
+    <div
+      class="indicator w-1 {% if forloop.first %}h-12 bg-primary{% else %}h-3 bg-white/30{% endif %} rounded-full hover:bg-white transition-all duration-300 cursor-pointer pointer-events-auto"
+      data-index="{{ forloop.counter0 }}"></div>
+    {% endfor %}
+  </div>
 
-      <div class="hidden peer-checked:flex fixed inset-0 z-[100] flex-col bg-background-dark/98 backdrop-blur-2xl transition-all duration-300 overflow-y-auto" id="search-modal">
-        <div class="p-6 flex flex-col min-h-full">
-          <div class="flex justify-end mb-12">
-            <label class="text-white/60 hover:text-white cursor-pointer p-2" for="search-toggle">
-              <span class="material-symbols-outlined text-4xl">close</span>
+
+
+  <!-- ===== HERO CONTENT ===== -->
+  <!-- Headline, description, and search form -->
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 pt-12">
+    <!-- Hero Headline Section -->
+    <div class="mb-12 mt-12">
+      <span class="text-primary text-sm font-bold tracking-[0.2em] uppercase mb-4 inline-block bg-black/20 backdrop-blur-md px-8 py-2 rounded-full border border-white/10">The New Standard</span>
+      <h1
+        class="text-white text-5xl md:text-7xl lg:text-9xl font-black leading-none tracking-tighter uppercase drop-shadow-2xl">
+        Beyond<br /><span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">Velocity</span>
+      </h1>
+      <p class="mt-6 text-white/80 text-lg md:text-xl font-light max-w-2xl tracking-wide mx-auto">
+        Discover our exclusive collection of performance vehicles designed for the modern era.
+      </p>
+    </div>
+
+    <!-- ===== DESKTOP SEARCH FORM ===== -->
+    <!-- Advanced search filter (hidden on mobile) -->
+    <div class="hidden lg:block w-full max-w-[1100px] mb-8">
+      <div class="glass-panel p-2 rounded-2xl shadow-2xl shadow-black/40 bg-background-dark border border-white/10">
+        <!-- Search Form with Multiple Filters -->
+        <form class="flex items-center divide-x divide-white/10">
+          <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors rounded-l-xl">
+            <!-- Model Filter -->
+            <label class="flex flex-col text-left">
+              <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-[14px]">directions_car</span>
+                Model
+              </span>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
+                <option class="text-black" disabled="" selected="" value="">Select Model</option>
+                <option class="text-black" value="model-s">Model S Plaid</option>
+                <option class="text-black" value="taycan">Porsche Taycan</option>
+                <option class="text-black" value="etron">Audi e-tron GT</option>
+              </select>
             </label>
           </div>
-          <div class="text-center mb-10">
-            <h3 class="text-white text-3xl font-bold uppercase tracking-widest">Find Your Match</h3>
-            <p class="text-white/40 text-sm mt-2">Filter our luxury inventory</p>
-          </div>
-          <form class="flex flex-col gap-6 max-w-md mx-auto w-full">
-            <div class="space-y-6">
-            <div class="space-y-6">
-              <div class="border-b border-white/10 pb-4">
-                <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                  <span class="material-symbols-outlined text-base">directions_car</span>
-                  Model
-                </label>
-                <select class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                  <option class="text-black" value="">Select Model</option>
-                  <option class="text-black" value="model-s">Model S Plaid</option>
-                  <option class="text-black" value="taycan">Porsche Taycan</option>
-                </select>
-              </div>
-              <div class="border-b border-white/10 pb-4">
-                <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                  <span class="material-symbols-outlined text-base">location_on</span>
-                  Location
-                </label>
-                <select class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                  <option class="text-black" value="">All Locations</option>
-                  <option class="text-black" value="ny">New York, NY</option>
-                </select>
-              </div>
-              <div class="border-b border-white/10 pb-4">
-                <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                  <span class="material-symbols-outlined text-base">category</span>
-                  Body Type
-                </label>
-                <select class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                  <option class="text-black" value="">Any Type</option>
-                  <option class="text-black" value="coupe">Coupe</option>
-                </select>
-              </div>
-              <div class="border-b border-white/10 pb-4">
-                <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                  <span class="material-symbols-outlined text-base">attach_money</span>
-                  Price Range
-                </label>
-                <select class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                  <option class="text-black" value="">Max Price</option>
-                  <option class="text-black" value="100k">$100,000</option>
-                </select>
-              </div>
-              <div class="border-b border-white/10 pb-4">
-                <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                  <span class="material-symbols-outlined text-base">search</span>
-                  Keywords
-                </label>
-                <input class="w-full bg-transparent border-none p-0 text-white text-xl font-medium placeholder:text-white/20 focus:ring-0" placeholder="e.g. Matte Black" type="text"/>
-              </div>
-            </div>
-            <button class="mt-8 flex w-full h-16 cursor-pointer items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-xl shadow-primary/30" type="button">
-              <span class="text-sm font-bold uppercase tracking-widest">Find Vehicle</span>
-            </button>
-          </form>
-        </div>
-      </div>
-    </main>
 
-   
-    
-  </body>
+          <!-- Location Filter -->
+          <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors">
+            <label class="flex flex-col text-left">
+              <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-[14px]">location_on</span>
+                Location
+              </span>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
+                <option class="text-black" disabled="" selected="" value="">All Locations</option>
+                <option class="text-black" value="ny">New York, NY</option>
+                <option class="text-black" value="la">Los Angeles, CA</option>
+                <option class="text-black" value="mia">Miami, FL</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Price Range Filter -->
+          <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors">
+            <label class="flex flex-col text-left">
+              <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-[14px]">attach_money</span>
+                Price Range
+              </span>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
+                <option class="text-black" disabled="" selected="" value="">Max Price</option>
+                <option class="text-black" value="50k">$50,000</option>
+                <option class="text-black" value="100k">$100,000</option>
+                <option class="text-black" value="200k">$200,000+</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Keywords Filter -->
+          <div class="flex-[1.5] px-4 py-3 group hover:bg-white/5 transition-colors">
+            <label class="flex flex-col text-left">
+              <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
+                <span class="material-symbols-outlined text-[14px]">search</span>
+                Keywords
+              </span>
+              <input
+                class="w-full bg-transparent border-none p-0 text-white font-medium placeholder:text-white/30 focus:ring-0 text-sm"
+                placeholder="e.g. Matte Black" type="text" />
+            </label>
+          </div>
+
+          <!-- Search Submit Button -->
+          <div class="px-3 py-1">
+            <button
+              class="h-12 w-12 flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-lg shadow-primary/20"
+              type="button">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <button
+      class="group flex items-center gap-2 text-white border-b border-white pb-1 hover:text-primary hover:border-primary transition-colors">
+      <span class="text-sm font-bold uppercase tracking-widest">Explore Collection</span>
+      <span
+        class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+    </button>
+  </div>
+
+  <div class="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-30">
+    <label
+      class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl shadow-primary/60 active:scale-90 transition-transform cursor-pointer"
+      for="search-toggle">
+      <span class="material-symbols-outlined text-2xl">search</span>
+    </label>
+  </div>
+
+  <div
+    class="hidden peer-checked:flex fixed inset-0 z-[100] flex-col bg-background-dark/98 backdrop-blur-2xl transition-all duration-300 overflow-y-auto"
+    id="search-modal">
+    <div class="p-6 flex flex-col min-h-full">
+      <div class="flex justify-end mb-12">
+        <label class="text-white/60 hover:text-white cursor-pointer p-2" for="search-toggle">
+          <span class="material-symbols-outlined text-4xl">close</span>
+        </label>
+      </div>
+      <div class="text-center mb-10">
+        <h3 class="text-white text-3xl font-bold uppercase tracking-widest">Find Your Match</h3>
+        <p class="text-white/40 text-sm mt-2">Filter our luxury inventory</p>
+      </div>
+      <form class="flex flex-col gap-6 max-w-md mx-auto w-full">
+        <div class="space-y-6">
+          <div class="space-y-6">
+            <div class="border-b border-white/10 pb-4">
+              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-base">directions_car</span>
+                Model
+              </label>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                <option class="text-black" value="">Select Model</option>
+                <option class="text-black" value="model-s">Model S Plaid</option>
+                <option class="text-black" value="taycan">Porsche Taycan</option>
+              </select>
+            </div>
+            <div class="border-b border-white/10 pb-4">
+              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-base">location_on</span>
+                Location
+              </label>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                <option class="text-black" value="">All Locations</option>
+                <option class="text-black" value="ny">New York, NY</option>
+              </select>
+            </div>
+            <div class="border-b border-white/10 pb-4">
+              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-base">category</span>
+                Body Type
+              </label>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                <option class="text-black" value="">Any Type</option>
+                <option class="text-black" value="coupe">Coupe</option>
+              </select>
+            </div>
+            <div class="border-b border-white/10 pb-4">
+              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-base">attach_money</span>
+                Price Range
+              </label>
+              <select
+                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                <option class="text-black" value="">Max Price</option>
+                <option class="text-black" value="100k">$100,000</option>
+              </select>
+            </div>
+            <div class="border-b border-white/10 pb-4">
+              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-base">search</span>
+                Keywords
+              </label>
+              <input
+                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium placeholder:text-white/20 focus:ring-0"
+                placeholder="e.g. Matte Black" type="text" />
+            </div>
+          </div>
+          <button
+            class="mt-8 flex w-full h-16 cursor-pointer items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-xl shadow-primary/30"
+            type="button">
+            <span class="text-sm font-bold uppercase tracking-widest">Find Vehicle</span>
+          </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+
+
+</body>
+
 </html>
-{% endblock  %}
+{% endblock %}
