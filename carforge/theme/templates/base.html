@@ -50,6 +50,15 @@
       body:has(#search-toggle:checked) {
         overflow: hidden;
       }
+      #mobile-menu-toggle:checked ~ .mobile-menu {
+        transform: translateX(0);
+      }
+      body:has(#mobile-menu-toggle:checked) {
+        overflow: hidden;
+      }
+      #mobile-menu-toggle:checked ~ .mobile-menu-overlay {
+        display: block;
+      }
       .hero-carousel-item {
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
@@ -66,6 +75,8 @@
   <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col overflow-x-hidden">
     <!-- Hidden checkbox for mobile search modal toggle -->
     <input class="hidden peer" id="search-toggle" type="checkbox"/>
+    <!-- Hidden checkbox for mobile menu toggle -->
+    <input class="hidden peer" id="mobile-menu-toggle" type="checkbox"/>
     <!-- ===== HEADER SECTION ===== -->
     <!-- Fixed navigation bar with logo and menu -->
     <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between whitespace-nowrap px-6 py-4 lg:px-12 b bg-black/20 backdrop-blur-md  ">
@@ -90,10 +101,39 @@
       </nav>
       
       <!-- Mobile Menu Toggle (Hidden on Desktop) -->
-      <button class="lg:hidden text-white">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
+      <label class="lg:hidden text-white cursor-pointer hover:text-primary transition-colors" for="mobile-menu-toggle">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+      </label>
     </header>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="fixed inset-0 z-50 hidden peer-checked:flex lg:hidden flex-col bg-background-dark/95 backdrop-blur-lg transition-all duration-300 pt-4 px-6 sm:inset-auto sm:right-0 sm:top-0 sm:bottom-0 sm:w-80 sm:pt-4 sm:rounded-l-2xl">
+      <!-- Close Button Header -->
+      <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/10 px-3">
+        <h2 class="text-white text-xl font-bold">Menu</h2>
+        <label class="text-white/60 hover:text-white hover:bg-white/10 cursor-pointer p-2 rounded-lg transition-all active:scale-95" for="mobile-menu-toggle">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </label>
+      </div>
+
+      <div class="flex flex-col gap-8 flex-1">
+        <!-- Mobile Navigation Links -->
+        <nav class="flex flex-col gap-4">
+          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Inventory</a>
+          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Services</a>
+          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Finance</a>
+          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">About Us</a>
+        </nav>
+      </div>
+      
+      <!-- Mobile Contact Button -->
+      <button class="w-full flex items-center justify-center h-12 rounded-xl bg-primary hover:bg-primary/90 transition-all text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/25 mb-8 active:scale-95">
+        Contact Us
+      </button>
+    </div>
+
+    <!-- Mobile Menu Overlay (closes menu when clicked on medium/large screens) -->
+    <label class="hidden sm:hidden lg:hidden peer-checked:fixed peer-checked:inset-0 z-30 bg-black/40 cursor-pointer" for="mobile-menu-toggle"></label>
 
     {% block content %}
     {% endblock  %}

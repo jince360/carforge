@@ -42,16 +42,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-      // Update indicators
-      indicators.forEach((indicator, i) => {
-        if (i === currentIndex) {
-          indicator.classList.remove('h-3', 'bg-white/30');
-          indicator.classList.add('h-12', 'bg-primary');
-        } else {
-          indicator.classList.remove('h-12', 'bg-primary');
-          indicator.classList.add('h-3', 'bg-white/30');
-        }
-      });
+      // Update indicators (only if they exist)
+      if (indicators.length > 0) {
+        indicators.forEach((indicator, i) => {
+          if (i === currentIndex) {
+            indicator.classList.remove('h-3', 'bg-white/30');
+            indicator.classList.add('h-12', 'bg-primary');
+          } else {
+            indicator.classList.remove('h-12', 'bg-primary');
+            indicator.classList.add('h-3', 'bg-white/30');
+          }
+        });
+      }
     }
 
     function nextSlide() {
@@ -62,17 +64,67 @@ document.addEventListener('DOMContentLoaded', function () {
       showSlide(currentIndex - 1);
     }
 
-    // Event Listeners
-    if (nextBtn) nextBtn.addEventListener('click', () => {
-      nextSlide();
-      resetInterval();
-    });
+    // Event Listeners - Enhanced touch support for mobile
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        nextSlide();
+        resetInterval();
+      });
+      nextBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        nextSlide();
+        resetInterval();
+      });
+    }
 
-    if (prevBtn) prevBtn.addEventListener('click', () => {
-      prevSlide();
-      resetInterval();
-    });
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        prevSlide();
+        resetInterval();
+      });
+      prevBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        prevSlide();
+        resetInterval();
+      });
+    }
 
+    // Swipe gesture support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const carouselElement = document.getElementById('hero-carousel');
+
+    if (carouselElement) {
+      carouselElement.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, false);
+
+      carouselElement.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, false);
+    }
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Swiped left - next slide
+        nextSlide();
+        resetInterval();
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Swiped right - previous slide
+        prevSlide();
+        resetInterval();
+      }
+    }
+
+    // Indicator click events
     indicators.forEach(indicator => {
       indicator.addEventListener('click', (e) => {
         const index = parseInt(e.target.dataset.index);
