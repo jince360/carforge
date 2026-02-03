@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Silence CKEditor deprecation warning
+SILENCED_SYSTEM_CHECKS = ['ckeditor.W001']
+
 
 # Application definition
 
