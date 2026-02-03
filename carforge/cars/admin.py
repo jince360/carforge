@@ -45,6 +45,12 @@ class AdditionalImagesInline(admin.TabularInline):
     fields = ("image",)
     readonly_fields = ()
 
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    search_fields = ("name",)
+    prepopulated_fields = {"slug": ("name",)}  
+
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
     list_display = ("brand", "model", "year", "price", "state", "is_featured")
