@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 STATE_CHOICES = [
@@ -187,7 +188,8 @@ class Car(models.Model):
     condition = models.ForeignKey(Condition, on_delete=models.SET_NULL, null=True, related_name="car_condition")
     price = models.DecimalField(max_digits=12, decimal_places=2)
     state = models.CharField(choices=STATE_CHOICES, max_length=2)
-    description = models.TextField(blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    description = RichTextField(blank=True)
     featured_image = models.ImageField(upload_to="car_images")
     car_features = models.ManyToManyField(Feature, related_name="car_features")
     fuel = models.ForeignKey(FuelType, on_delete=models.SET_NULL, null=True)

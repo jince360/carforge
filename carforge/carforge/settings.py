@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "designs",
     "cars",
     
+    "ckeditor",
 ]
 
 TAILWIND_APP_NAME = "theme"

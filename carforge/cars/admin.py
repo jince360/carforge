@@ -2,19 +2,19 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
-@admin.register(CarType)
+
 class CarTypeAdmin(admin.ModelAdmin):
     list_display = ("car_type",)
     search_fields = ("car_type",)
     list_filter = ("car_type",)
 
-@admin.register(FuelType)
+
 class FuelTypeAdmin(admin.ModelAdmin):
     list_display = ("fuel",)
     search_fields = ("fuel",)
     list_filter = ("fuel",)
 
-@admin.register(Condition)
+
 class ConditionAdmin(admin.ModelAdmin):
     list_display = ("condition",)
     search_fields = ("condition",)
@@ -32,7 +32,7 @@ class FeatureAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     list_filter = ("name",)
 
-@admin.register(Transmission)
+
 class TransmissionAdmin(admin.ModelAdmin):
     list_display = ("transmission",)
     search_fields = ("transmission",)
@@ -57,3 +57,4 @@ class CarAdmin(admin.ModelAdmin):
     search_fields = ("brand__name", "model", "identification_number")
     list_filter = ("brand", "fuel", "transmission", "condition", "state", "year")
     inlines = [AdditionalImagesInline]  
+    filter_horizontal = ("car_features",) 
