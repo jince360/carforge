@@ -245,6 +245,154 @@
 </main>
 
 
+<section class="py-24 px-6 lg:px-12 bg-background-dark overflow-hidden relative">
+  <div class="max-w-7xl mx-auto relative px-4 md:px-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div>
+        <span class="text-primary text-[10px] font-black tracking-[0.4em] uppercase mb-2 block">Curated Selection</span>
+        <h2 class="text-white text-3xl lg:text-4xl font-bold uppercase tracking-tight">Featured Vehicles</h2>
+      </div>
+      <div class="h-px flex-1 bg-white/5 hidden md:block mx-10 mb-3"></div>
+    </div>
+    <button id="featured-prev"
+      class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-center text-white/40 hover:border-primary hover:text-primary transition-all group active:scale-95">
+      <span class="material-symbols-outlined text-xl group-hover:-translate-x-0.5 transition-transform">west</span>
+    </button>
+    <button id="featured-next"
+      class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-center text-white/40 hover:border-primary hover:text-primary transition-all group active:scale-95">
+      <span class="material-symbols-outlined text-xl group-hover:translate-x-0.5 transition-transform">east</span>
+    </button>
+    <div id="featured-carousel"
+      class="flex gap-6 overflow-hidden scroll-smooth snap-x snap-mandatory pb-2 carousel-container">
+
+      {% for i in featured %}
+
+      <div class="flex-none w-[280px] md:w-[300px] snap-center">
+        <div class="car-card-glass rounded-xl overflow-hidden group">
+          <div class="relative h-44 overflow-hidden">
+            <img alt="2024 Aventador SVJ"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              src="{{i.featured_image.url}}" />
+            <div
+              class="absolute top-3 right-3 bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-lg">
+              Featured</div>
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-white text-sm font-bold uppercase tracking-wide">{{i.brand}} {{i.model}}</h3>
+                <p class="text-white/40 text-[9px] mt-0.5 uppercase tracking-widest">{{i.color}}</p>
+              </div>
+              <span class="text-primary font-bold text-xs">₹ {{i.price|floatformat:0 }}</span>
+            </div>
+            <div class="grid grid-cols-3 gap-1 border-y border-white/5 py-4 mb-5">
+              <div class="text-center">
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">TYPE</p>
+                <p class="text-white text-xs font-bold">{{i.type}}</p>
+              </div>
+              <div class="text-center border-x border-white/5">
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">CONDITION</p>
+                <p class="text-white text-xs font-bold">{{i.condition}}</p>
+              </div>
+              <div class="text-center">
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">FUEL</p>
+                <p class="text-white text-xs font-bold">{{i.fuel.get_fuel_display}}</p>
+              </div>
+            </div>
+            <button
+              class="w-full py-2.5 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all">View
+              Details</button>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+
+    </div>
+    <div class="flex justify-center items-center gap-3 mt-4" id="featured-pagination">
+      {% for i in featured %}
+      <button
+        class="w-1.5 h-1.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-white/20 hover:bg-white/40{% endif %} transition-colors featured-dot"
+        data-index="{{ forloop.counter0 }}"></button>
+      {% endfor %}
+    </div>
+    <div class="mt-16 flex justify-center">
+      <button
+        class="px-10 py-4 bg-white text-background-dark text-[11px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-primary hover:text-white transition-all shadow-2xl hover:shadow-primary/30 active:scale-95">
+        View All Inventory
+      </button>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const featuredContainer = document.getElementById('featured-carousel');
+    const featuredPrevBtn = document.getElementById('featured-prev');
+    const featuredNextBtn = document.getElementById('featured-next');
+    const dots = document.querySelectorAll('.featured-dot');
+
+    if (featuredContainer && featuredPrevBtn && featuredNextBtn) {
+      const getScrollAmount = () => {
+        const card = featuredContainer.querySelector('.snap-center');
+        // Default to 300px + 24px gap if card not found
+        if (!card) return 324;
+
+        // Calculate width including gap
+        const style = window.getComputedStyle(featuredContainer);
+        const gap = parseFloat(style.columnGap) || parseFloat(style.gap) || 24;
+        return card.offsetWidth + gap;
+      };
+
+      const updateDots = () => {
+        const itemWidth = getScrollAmount();
+        const scrollPos = featuredContainer.scrollLeft;
+        const index = Math.round(scrollPos / itemWidth);
+
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.remove('bg-white/20', 'hover:bg-white/40');
+            dot.classList.add('bg-primary');
+          } else {
+            dot.classList.add('bg-white/20', 'hover:bg-white/40');
+            dot.classList.remove('bg-primary');
+          }
+        });
+      };
+
+      // Add scroll listener to update dots
+      featuredContainer.addEventListener('scroll', updateDots);
+
+      featuredNextBtn.addEventListener('click', () => {
+        featuredContainer.scrollBy({
+          left: getScrollAmount(),
+          behavior: 'smooth'
+        });
+      });
+
+      featuredPrevBtn.addEventListener('click', () => {
+        featuredContainer.scrollBy({
+          left: -getScrollAmount(),
+          behavior: 'smooth'
+        });
+      });
+
+      // Dot click logic
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          const index = parseInt(e.target.dataset.index);
+          const itemWidth = getScrollAmount();
+          featuredContainer.scrollTo({
+            left: index * itemWidth,
+            behavior: 'smooth'
+          });
+        });
+      });
+    }
+  });
+</script>
+
+
 
 </body>
 
