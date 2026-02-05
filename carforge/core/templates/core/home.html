@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% load humanize %}
 <!-- ===== MAIN HERO SECTION ===== -->
 <!-- Full-screen hero with background image, carousel, and search functionality -->
 <main class="relative flex-grow flex flex-col w-full h-screen min-h-[700px] overflow-hidden">
@@ -256,19 +256,22 @@
     </div>
     <button id="featured-prev"
       class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-center text-white/40 hover:border-primary hover:text-primary transition-all group active:scale-95">
-      <span class="material-symbols-outlined text-xl group-hover:-translate-x-0.5 transition-transform">west</span>
+      <span
+        class="material-symbols-outlined text-xl group-hover:-translate-x-0.5 transition-transform cursor-pointer">west</span>
     </button>
     <button id="featured-next"
       class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-center text-white/40 hover:border-primary hover:text-primary transition-all group active:scale-95">
-      <span class="material-symbols-outlined text-xl group-hover:translate-x-0.5 transition-transform">east</span>
+      <span
+        class="material-symbols-outlined text-xl group-hover:translate-x-0.5 transition-transform cursor-pointer">east</span>
     </button>
     <div id="featured-carousel"
-      class="flex gap-6 overflow-hidden scroll-smooth snap-x snap-mandatory pb-2 carousel-container">
+      class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 carousel-container [&::-webkit-scrollbar]:hidden"
+      style="scrollbar-width: none; -ms-overflow-style: none;">
 
       {% for i in featured %}
 
       <div class="flex-none w-[280px] md:w-[300px] snap-center">
-        <div class="car-card-glass rounded-xl overflow-hidden group">
+        <div class="car-card-glass rounded-xl overflow-hidden group border border-white/10 h-full flex flex-col">
           <div class="relative h-44 overflow-hidden">
             <img alt="2024 Aventador SVJ"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -277,30 +280,30 @@
               class="absolute top-3 right-3 bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-lg">
               Featured</div>
           </div>
-          <div class="p-6">
+          <div class="p-6 flex-1 flex flex-col">
             <div class="flex justify-between items-start mb-4">
               <div>
                 <h3 class="text-white text-sm font-bold uppercase tracking-wide">{{i.brand}} {{i.model}}</h3>
                 <p class="text-white/40 text-[9px] mt-0.5 uppercase tracking-widest">{{i.color}}</p>
               </div>
-              <span class="text-primary font-bold text-xs">₹ {{i.price|floatformat:0 }}</span>
+              <span class="text-primary font-bold text-xs">₹{{i.price|floatformat:0|intcomma }}</span>
             </div>
             <div class="grid grid-cols-3 gap-1 border-y border-white/5 py-4 mb-5">
               <div class="text-center">
-                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">TYPE</p>
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-widest mb-0.5">TYPE</p>
                 <p class="text-white text-xs font-bold">{{i.type}}</p>
               </div>
               <div class="text-center border-x border-white/5">
-                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">CONDITION</p>
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-widest mb-0.5">CONDITION</p>
                 <p class="text-white text-xs font-bold">{{i.condition}}</p>
               </div>
               <div class="text-center">
-                <p class="text-[8px] font-bold text-white/30 uppercase tracking-tighter mb-0.5">FUEL</p>
+                <p class="text-[8px] font-bold text-white/30 uppercase tracking-widest mb-0.5">FUEL</p>
                 <p class="text-white text-xs font-bold">{{i.fuel.get_fuel_display}}</p>
               </div>
             </div>
             <button
-              class="w-full py-2.5 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all">View
+              class="w-full py-2.5 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all mt-auto">View
               Details</button>
           </div>
         </div>
@@ -310,13 +313,7 @@
 
 
     </div>
-    <div class="flex justify-center items-center gap-3 mt-4" id="featured-pagination">
-      {% for i in featured %}
-      <button
-        class="w-1.5 h-1.5 rounded-full {% if forloop.first %}bg-primary{% else %}bg-white/20 hover:bg-white/40{% endif %} transition-colors featured-dot"
-        data-index="{{ forloop.counter0 }}"></button>
-      {% endfor %}
-    </div>
+
     <div class="mt-16 flex justify-center">
       <button
         class="px-10 py-4 bg-white text-background-dark text-[11px] font-bold uppercase tracking-[0.3em] rounded-full hover:bg-primary hover:text-white transition-all shadow-2xl hover:shadow-primary/30 active:scale-95">
@@ -325,12 +322,92 @@
     </div>
   </div>
 </section>
+
+
+
+<section class="py-24 px-6 lg:px-12 bg-[#0a1016] relative overflow-hidden">
+  <div class="glow-accent top-0 left-1/4"></div>
+  <div class="glow-accent bottom-0 right-1/4"></div>
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="mb-16 text-center">
+      <span class="text-primary text-[10px] font-black tracking-[0.4em] uppercase mb-2 block">New Acquisitions</span>
+      <h2 class="text-white text-3xl lg:text-4xl font-bold uppercase tracking-tight">Latest Arrivals</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for i in all_cars|slice:"0:8" %}
+      <div class="car-card-glass rounded-xl overflow-hidden group flex flex-col border border-white/10">
+        <div class="relative h-48 overflow-hidden">
+          <img alt="Car Model"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            src="{{ i.featured_image.url }}" />
+          <div class="absolute top-3 left-3">
+            {% if i.is_available %}
+            <span
+              class="bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">For
+              Sale</span>
+            {% else %}
+            <span
+              class="bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">Sold</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex justify-between items-start mb-4 gap-1">
+            <h3 class="text-white text-sm font-bold uppercase tracking-wide">{{i.brand}} {{i.model}}</h3>
+            <span class="text-primary font-bold text-xs">₹{{i.price|floatformat:0|intcomma}}</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 border-t border-white/5 pt-4 mt-auto">
+            <div class="flex flex-col">
+              <span class="text-white/30 text-[8px] font-bold uppercase tracking-widest mb-1">year</span>
+              <div class="flex items-center gap-1.5">
+
+                <span class="text-white text-xs font-bold">{{i.year}}</span>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-white/30 text-[8px] font-bold uppercase tracking-widest mb-1">Type</span>
+              <div class="flex items-center gap-1.5">
+
+                <span class="text-white text-xs font-bold uppercase">{{i.type}}</span>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-white/30 text-[8px] font-bold uppercase tracking-widest mb-1">fuel</span>
+              <div class="flex items-center gap-1.5">
+
+                <span class="text-white text-xs font-bold uppercase">{{i.fuel.get_fuel_display}}</span>
+              </div>
+            </div>
+
+
+          </div>
+          <button
+            class="w-full py-2.5 mt-4 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all">View
+            Details</button>
+        </div>
+      </div>
+      {% endfor %}
+
+
+    </div>
+    <div class="mt-16 text-center">
+      <button
+        class="px-12 py-4 rounded-full border border-white/10 text-white text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-background-dark transition-all">
+        Discover All New Arrivals
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const featuredContainer = document.getElementById('featured-carousel');
     const featuredPrevBtn = document.getElementById('featured-prev');
     const featuredNextBtn = document.getElementById('featured-next');
-    const dots = document.querySelectorAll('.featured-dot');
 
     if (featuredContainer && featuredPrevBtn && featuredNextBtn) {
       const getScrollAmount = () => {
@@ -344,25 +421,6 @@
         return card.offsetWidth + gap;
       };
 
-      const updateDots = () => {
-        const itemWidth = getScrollAmount();
-        const scrollPos = featuredContainer.scrollLeft;
-        const index = Math.round(scrollPos / itemWidth);
-
-        dots.forEach((dot, i) => {
-          if (i === index) {
-            dot.classList.remove('bg-white/20', 'hover:bg-white/40');
-            dot.classList.add('bg-primary');
-          } else {
-            dot.classList.add('bg-white/20', 'hover:bg-white/40');
-            dot.classList.remove('bg-primary');
-          }
-        });
-      };
-
-      // Add scroll listener to update dots
-      featuredContainer.addEventListener('scroll', updateDots);
-
       featuredNextBtn.addEventListener('click', () => {
         featuredContainer.scrollBy({
           left: getScrollAmount(),
@@ -374,18 +432,6 @@
         featuredContainer.scrollBy({
           left: -getScrollAmount(),
           behavior: 'smooth'
-        });
-      });
-
-      // Dot click logic
-      dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-          const index = parseInt(e.target.dataset.index);
-          const itemWidth = getScrollAmount();
-          featuredContainer.scrollTo({
-            left: index * itemWidth,
-            behavior: 'smooth'
-          });
         });
       });
     }

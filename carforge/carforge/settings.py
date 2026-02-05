@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "cars",
     
     "ckeditor",
+    "django.contrib.humanize",
 ]
 
 TAILWIND_APP_NAME = "theme"

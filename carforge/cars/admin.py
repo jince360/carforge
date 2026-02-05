@@ -57,8 +57,8 @@ class CarAdmin(admin.ModelAdmin):
     def thumbnail(self, object):
         return format_html("<img src='{}' width='40' height='40' style='object-fit: cover; border-radius: 10px;' />", object.featured_image.url)
     thumbnail.short_description = "Photo"
-    list_display = ("thumbnail","brand", "model", "year", "price", "state", "is_featured", "color")
-    list_editable = ("is_featured",)
+    list_display = ("thumbnail","brand", "model", "year", "price", "state", "is_featured", "color", "is_available","is_active")
+    list_editable = ("is_featured", "is_available", "is_active")
     list_display_links = ("thumbnail", "brand")
     search_fields = ("brand__name", "model", "identification_number", "color__name", "state", "city", "type__car_type",)
     list_filter = ("brand", "fuel", "transmission", "condition", "state", "year")

@@ -199,6 +199,8 @@ class Car(models.Model):
     identification_number = models.CharField(max_length=17, unique=True, validators=[validate_vin])
     number_of_owners = models.PositiveIntegerField()
     is_featured = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
 
