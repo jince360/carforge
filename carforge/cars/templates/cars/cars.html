@@ -1,1 +1,349 @@
-<h1>cars</h1>
+{% extends "base.html" %}
+{% block content %}
+{% load humanize %}
+<main class="flex-grow w-full pt-28 pb-20 px-4 md:px-8 lg:px-12 max-w-[1600px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
+        <div class="lg:col-span-8 flex flex-col gap-16">
+            <section>
+                <div
+                    class="w-full relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-black mb-6 group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-[#101922] via-transparent to-transparent opacity-60 z-10">
+                    </div>
+                    <img id="main-car-image" alt="Car Hero Image"
+                        class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        src="{{car.featured_image.url}}" />
+                    <div class="absolute top-6 left-6 z-20">
+                        {% if car.is_available %}
+                        <span
+                            class="bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">For
+                            Sale</span>
+                        {% else %}
+                        <span
+                            class="bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">Sold</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Thumbnail Carousel with Arrows -->
+                <div class="relative">
+                    <!-- Left Arrow -->
+                    <button id="carousel-prev"
+                        class="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/60 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all shadow-lg">
+                        <span class="material-symbols-outlined text-xl">chevron_left</span>
+                    </button>
+                    <!-- Carousel -->
+                    <div id="thumbnail-carousel" class="flex gap-3 overflow-x-auto py-2 px-1 scrollbar-hide snap-x"
+                        style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;">
+                        {% for i in car.car_images.all %}
+                        <div class="thumbnail-item flex-none w-24 md:w-32 aspect-[4/3] rounded-xl overflow-hidden border-2 border-white/20 hover:border-primary cursor-pointer snap-start transition-all"
+                            onclick="swapMainImage(this)">
+                            <img alt="Car View" class="w-full h-full object-cover" src="{{i.image.url}}" />
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Right Arrow -->
+                    <button id="carousel-next"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/60 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition-all shadow-lg">
+                        <span class="material-symbols-outlined text-xl">chevron_right</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Mobile Summary Block -->
+            <div class="lg:hidden mb-8">
+                <div class="glass-panel p-5 rounded-2xl border border-primary/20 shadow-2xl shadow-primary/5">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h1 class="text-white text-2xl font-black uppercase tracking-tight mb-1">{{car.brand}}
+                                {{car.model}} </h1>
+                            <p class="text-white/50 text-xs font-bold uppercase tracking-widest">{{car.brand}}</p>
+                        </div>
+                    </div>
+                    <div class="my-6 border-y border-white/10 py-6">
+                        <div class="flex items-end gap-2 mb-2">
+                            <span
+                                class="text-3xl text-primary font-bold tracking-tight">₹{{car.price|floatformat:0|intcomma}}</span>
+                        </div>
+                        <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest">Excl. Taxes &amp;
+                            Licensing</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-8">
+                        <div class="text-center p-2 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">road</span>
+                            <p class="text-white text-sm font-bold">{{car.milage}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">kmpl</p>
+                        </div>
+                        <div class="text-center p-2 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">calendar_today</span>
+                            <p class="text-white text-sm font-bold">{{car.year}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">year</p>
+                        </div>
+                        <div class="text-center p-2 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">local_gas_station</span>
+                            <p class="text-white text-sm font-bold uppercase">{{car.fuel.get_fuel_display}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">fuel</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <button
+                            class="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 transition-all text-white font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">mail</span>
+                            Inquire Now
+                        </button>
+                        <button
+                            class="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-all text-white font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">directions_car</span>
+                            Book Test Drive
+                        </button>
+                    </div>
+                    <div
+                        class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">share</span> Share</span>
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">print</span> Print Spec</span>
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">compare_arrows</span> Compare</span>
+                    </div>
+                </div>
+            </div>
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-panel p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                        <span class="material-symbols-outlined text-primary text-2xl">info</span>
+                        <h3 class="text-white text-lg font-bold uppercase tracking-widest">Vehicle Overview</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Brand</span>
+                            <span class="text-white font-medium text-sm">{{car.brand}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Model</span>
+                            <span class="text-white font-medium text-sm">{{car.model}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Body Type</span>
+                            <span class="text-white font-medium text-sm">{{car.type}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Year</span>
+                            <span class="text-white font-medium text-sm">{{car.year}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Door Type</span>
+                            <span class="text-white font-medium text-sm">{{car.door_type}} Door</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Color</span>
+                            <span class="text-white font-medium text-sm">{{car.color}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Condition</span>
+                            <span class="text-white font-medium text-sm">{{car.condition}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Location</span>
+                            <span class="text-white font-medium text-sm">{{car.city}}, {{car.state}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                        <span class="material-symbols-outlined text-primary text-2xl">settings_applications</span>
+                        <h3 class="text-white text-lg font-bold uppercase tracking-widest">Technical Data</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Fuel Type</span>
+                            <span class="text-white font-medium text-sm">{{car.fuel.get_fuel_display}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Engine</span>
+                            <span class="text-white font-medium text-sm">{{car.engine}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Transmission</span>
+                            <span class="text-white font-medium text-sm">{{car.transmission}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Odometer Reading</span>
+                            <span class="text-white font-medium text-sm">{{car.odometer_reading}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Mileage</span>
+                            <span class="text-white font-medium text-sm">{{car.milage}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Seating Capacity</span>
+                            <span class="text-white font-medium text-sm">{{car.seating_capacity}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Owners</span>
+                            <span class="text-white font-medium text-sm">{{car.number_of_owners}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40 text-sm">Availability</span>
+                            {% if car.is_available %}
+                            <span class="text-green-400 font-medium text-sm flex items-center gap-1"><span
+                                    class="block w-1.5 h-1.5 rounded-full bg-green-400"></span> For Sale</span>
+                            {% else %}
+                            <span class="text-red-400 font-medium text-sm flex items-center gap-1"><span
+                                    class="block w-1.5 h-1.5 rounded-full bg-red-400"></span> Not Available</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+                <div class="md:col-span-3">
+                    <h3 class="text-white text-2xl font-bold uppercase mb-6 tracking-tight">Description</h3>
+                    <div class="text-white/70 font-light leading-relaxed space-y-4 font-body text-sm text-justify">
+                        {{car.description|safe}}
+                    </div>
+                </div>
+                <div class="md:col-span-2 glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-primary">stars</span>
+                        <h4 class="text-white font-bold uppercase tracking-wider text-sm">Premium Features</h4>
+                    </div>
+                    <ul class="space-y-3">
+                        {% for i in car.car_features.all %}
+                        <li class="flex items-start gap-3 text-sm text-white/80">
+                            <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                            {{i.name}}
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="hidden lg:block lg:col-span-4 relative">
+            <div class="sticky-summary">
+                <div class="glass-panel p-8 rounded-2xl border border-primary/20 shadow-2xl shadow-primary/5">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h1 class="text-white text-3xl font-black uppercase tracking-tight mb-1">{{car.brand}}
+                                {{car.model}} </h1>
+                            <p class="text-white/50 text-xs font-bold uppercase tracking-widest">{{car.brand}}</p>
+                        </div>
+                    </div>
+                    <div class="my-6 border-y border-white/10 py-6">
+                        <div class="flex items-end gap-2 mb-2">
+                            <span
+                                class="text-4xl text-primary font-bold tracking-tight">₹{{car.price|floatformat:0|intcomma}}</span>
+                        </div>
+                        <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest">Excl. Taxes &amp;
+                            Licensing</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-8">
+                        <div class="text-center p-3 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">road</span>
+                            <p class="text-white text-sm font-bold">{{car.milage}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">kmpl</p>
+                        </div>
+                        <div class="text-center p-3 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">calendar_today</span>
+                            <p class="text-white text-sm font-bold">{{car.year}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">year</p>
+                        </div>
+                        <div class="text-center p-3 rounded-lg bg-white/5 border border-white/5">
+                            <span class="material-symbols-outlined text-primary text-xl mb-1">local_gas_station</span>
+                            <p class="text-white text-sm font-bold uppercase">{{car.fuel.get_fuel_display}}</p>
+                            <p class="text-white/30 text-[8px] uppercase font-bold">fuel</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <button
+                            class="w-full py-4 rounded-xl bg-primary hover:bg-primary/90 transition-all text-white font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">mail</span>
+                            Inquire Now
+                        </button>
+                        <button
+                            class="w-full py-4 rounded-xl border border-white/20 hover:bg-white/5 transition-all text-white font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">directions_car</span>
+                            Book Test Drive
+                        </button>
+                    </div>
+                    <div
+                        class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/50">
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">share</span> Share</span>
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">print</span> Print Spec</span>
+                        <span class="flex items-center gap-1 hover:text-white cursor-pointer transition-colors"><span
+                                class="material-symbols-outlined text-sm">compare_arrows</span> Compare</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+</body>
+
+<script>
+    // Click to swap main image
+    function swapMainImage(thumbEl) {
+        const mainImg = document.getElementById('main-car-image');
+        const thumbImg = thumbEl.querySelector('img');
+        if (mainImg && thumbImg) {
+            mainImg.src = thumbImg.src;
+        }
+        // Update active thumbnail border
+        document.querySelectorAll('.thumbnail-item').forEach(t => {
+            t.classList.remove('border-primary');
+            t.classList.add('border-white/20');
+        });
+        thumbEl.classList.remove('border-white/20');
+        thumbEl.classList.add('border-primary');
+    }
+
+    // Arrow navigation
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.getElementById('thumbnail-carousel');
+        const prevBtn = document.getElementById('carousel-prev');
+        const nextBtn = document.getElementById('carousel-next');
+        const scrollAmount = 150;
+
+        if (prevBtn && carousel) {
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+        }
+        if (nextBtn && carousel) {
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+        }
+
+        // Touch swipe support with smooth scrolling
+        if (carousel) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            carousel.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX;
+                scrollLeft = carousel.scrollLeft;
+                carousel.style.scrollBehavior = 'auto';
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', () => {
+                isDown = false;
+                carousel.style.scrollBehavior = 'smooth';
+            }, { passive: true });
+
+            carousel.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX;
+                const walk = (startX - x);
+                carousel.scrollLeft = scrollLeft + walk;
+            }, { passive: true });
+        }
+    });
+</script>
+{% endblock %}
