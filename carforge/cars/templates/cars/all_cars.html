@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block content %}
+{% load humanize %}
+<main class="flex-grow flex flex-col w-full pt-28 pb-12">
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]"></div>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div>
+                <span class="text-primary text-[10px] font-black tracking-[0.4em] uppercase mb-2 block">Our
+                    Collection</span>
+                <h1 class="text-white text-4xl lg:text-5xl font-bold uppercase tracking-tight">All Vehicles</h1>
+            </div>
+            <div class="text-right">
+                <p class="text-white/60 text-sm">Showing <span class="text-white font-bold">12</span> of <span
+                        class="text-white font-bold">48</span> vehicles</p>
+            </div>
+        </div>
+        <div class="glass-panel p-6 rounded-2xl mb-12 border border-white/10">
+            <div class="flex flex-col gap-6">
+                <div class="flex items-center justify-between flex-wrap gap-4 border-b border-white/5 pb-4 mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">tune</span>
+                        <span class="text-white font-bold uppercase tracking-wider text-sm">Smart Filters</span>
+                    </div>
+
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="relative">
+                        <select
+                            class="w-full bg-background-dark/50 border border-white/10 rounded-lg py-2.5 px-4 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+                            <option value="">Brand (All)</option>
+                            <option value="porsche">Porsche</option>
+                            <option value="ferrari">Ferrari</option>
+                            <option value="lamborghini">Lamborghini</option>
+                            <option value="mclaren">McLaren</option>
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-white/50">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select
+                            class="w-full bg-background-dark/50 border border-white/10 rounded-lg py-2.5 px-4 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+                            <option value="">Model (All)</option>
+                            <option value="911">911</option>
+                            <option value="huracan">Huracan</option>
+                            <option value="sf90">SF90</option>
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-white/50">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select
+                            class="w-full bg-background-dark/50 border border-white/10 rounded-lg py-2.5 px-4 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+                            <option value="">Year (Any)</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-white/50">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select
+                            class="w-full bg-background-dark/50 border border-white/10 rounded-lg py-2.5 px-4 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+                            <option value="">Transmission</option>
+                            <option value="auto">Automatic</option>
+                            <option value="manual">Manual</option>
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-white/50">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select
+                            class="w-full bg-background-dark/50 border border-white/10 rounded-lg py-2.5 px-4 text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+                            <option value="">Fuel Type</option>
+                            <option value="gas">Gasoline</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="electric">Electric</option>
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-white/50">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-6 pt-2">
+                    <div class="w-full md:w-1/3">
+                        <div class="flex justify-between mb-2">
+                            <label class="text-xs font-bold uppercase tracking-wider text-white/70">Price Range</label>
+                            <span class="text-xs font-bold text-primary">$100k - $5M+</span>
+                        </div>
+                        <input class="w-full bg-transparent appearance-none h-1" max="5000000" min="100000" step="50000"
+                            type="range" value="2500000" />
+                    </div>
+                    <div class="w-full md:w-2/3 flex justify-end">
+                        <button
+                            class="w-full md:w-auto px-8 py-2.5 rounded-lg bg-primary hover:bg-primary/90 transition-all text-white font-bold text-sm tracking-widest shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-lg">search</span>
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {% for i in all_cars %}
+
+            <div
+                class="car-card-glass rounded-xl overflow-hidden group flex flex-col h-full border border-white/10 hover:border-primary/30 transition-colors">
+                <div class="relative h-64 overflow-hidden">
+                    <img alt="{{i.brand}} {{i.model}}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        src="{{i.featured_image.url}}" />
+                    <div
+                        class="absolute top-4 right-4 bg-primary/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                        New</div>
+                    <button
+                        class="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/50 hover:bg-white text-white hover:text-black backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
+                        <span class="material-symbols-outlined text-lg">favorite</span>
+                    </button>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="">
+                            <div class="text-primary text-[10px] font-bold tracking-widest uppercase mb-4">{{i.year}}
+                            </div>
+                            <h3 class="text-white text-lg font-bold uppercase tracking-wide">{{i.brand}} {{i.model}}
+                            </h3>
+                        </div>
+                        <span class="text-white font-bold text-lg">₹{{i.price|floatformat:0|intcomma}}</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 border-t border-white/5 pt-4 mt-auto mb-4">
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="material-symbols-outlined text-white/30 text-base">directions_car</span>
+                            <span class="text-white text-xs font-bold uppercase">{{i.type}}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 border-l border-white/5">
+                            <span class="material-symbols-outlined text-white/30 text-base">verified</span>
+                            <span class="text-white text-xs font-bold uppercase">{{i.condition}}</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 border-l border-white/5">
+                            <span class="material-symbols-outlined text-white/30 text-base">local_gas_station</span>
+                            <span class="text-white text-xs font-bold uppercase">{{i.fuel}}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'cars' i.id %}"
+                        class="w-full text-center py-2.5 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all mt-auto flex items-center justify-center gap-2">
+                        View Details
+                    </a>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+        <div class="flex flex-col items-center gap-6">
+            <p class="text-white/40 text-xs font-medium uppercase tracking-widest">Showing 6 of 48 Vehicles</p>
+            <div class="w-full max-w-md h-1 bg-white/10 rounded-full overflow-hidden mb-2">
+                <div class="h-full w-1/8 bg-primary rounded-full"></div>
+            </div>
+            <button
+                class="px-8 py-3 rounded-xl border border-white/10 hover:border-primary/50 text-white font-bold text-sm tracking-widest uppercase bg-white/5 hover:bg-white/10 transition-all">
+                Load More
+            </button>
+        </div>
+    </div>
+</main>
+<div class="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-30">
+    <label
+        class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl shadow-primary/60 active:scale-90 transition-transform cursor-pointer"
+        for="search-toggle">
+        <span class="material-symbols-outlined text-2xl">search</span>
+    </label>
+</div>
+<div class="hidden peer-checked:flex fixed inset-0 z-[100] flex-col bg-background-dark/98 backdrop-blur-2xl transition-all duration-300 overflow-y-auto"
+    id="search-modal">
+    <div class="p-6 flex flex-col min-h-full">
+        <div class="flex justify-end mb-12">
+            <label class="text-white/60 hover:text-white cursor-pointer p-2" for="search-toggle">
+                <span class="material-symbols-outlined text-4xl">close</span>
+            </label>
+        </div>
+        <div class="text-center mb-10">
+            <h3 class="text-white text-3xl font-bold uppercase tracking-widest">Find Your Match</h3>
+            <p class="text-white/40 text-sm mt-2">Filter our luxury inventory</p>
+        </div>
+        <form class="flex flex-col gap-6 max-w-md mx-auto w-full">
+            <div class="space-y-6">
+                <div class="border-b border-white/10 pb-4">
+                    <label
+                        class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                        <span class="material-symbols-outlined text-base">directions_car</span> Model
+                    </label>
+                    <select
+                        class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                        <option class="text-black" value="">Select Model</option>
+                        <option class="text-black" value="model-s">Model S Plaid</option>
+                        <option class="text-black" value="taycan">Porsche Taycan</option>
+                    </select>
+                </div>
+                <div class="border-b border-white/10 pb-4">
+                    <label
+                        class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                        <span class="material-symbols-outlined text-base">location_on</span> Location
+                    </label>
+                    <select
+                        class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                        <option class="text-black" value="">All Locations</option>
+                        <option class="text-black" value="ny">New York, NY</option>
+                    </select>
+                </div>
+                <div class="border-b border-white/10 pb-4">
+                    <label
+                        class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
+                        <span class="material-symbols-outlined text-base">attach_money</span> Price Range
+                    </label>
+                    <select
+                        class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
+                        <option class="text-black" value="">Max Price</option>
+                        <option class="text-black" value="100k">$100,000</option>
+                    </select>
+                </div>
+            </div>
+            <button
+                class="mt-8 flex w-full h-16 cursor-pointer items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-xl shadow-primary/30"
+                type="button">
+                <span class="text-sm font-bold uppercase tracking-widest">Find Vehicle</span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
