@@ -14,8 +14,10 @@
                 <h1 class="text-white text-4xl lg:text-5xl font-bold uppercase tracking-tight">All Vehicles</h1>
             </div>
             <div class="text-right">
-                <p class="text-white/60 text-sm">Showing <span class="text-white font-bold">12</span> of <span
-                        class="text-white font-bold">48</span> vehicles</p>
+                <p class="text-white/40 text-xs font-medium uppercase tracking-widest">
+                    Page {{ all_cars.number }} of {{ all_cars.paginator.num_pages }}
+                    ({{ all_cars.paginator.count }} Vehicles)
+                </p>
             </div>
         </div>
         <div class="glass-panel p-6 rounded-2xl mb-12 border border-white/10">
@@ -98,10 +100,85 @@
                     <div class="w-full md:w-1/3">
                         <div class="flex justify-between mb-2">
                             <label class="text-xs font-bold uppercase tracking-wider text-white/70">Price Range</label>
-                            <span class="text-xs font-bold text-primary">$100k - $5M+</span>
+                            <span class="text-xs font-bold text-primary" id="price-display">₹1000000 - ₹100000000</span>
                         </div>
-                        <input class="w-full bg-transparent appearance-none h-1" max="5000000" min="100000" step="50000"
-                            type="range" value="2500000" />
+                        <input class="w-full h-2 rounded-full cursor-pointer range-slider" id="price-range"
+                            max="100000000" min="1000000" step="50000" type="range" value="2500000" />
+                        <style>
+                            .range-slider {
+                                -webkit-appearance: none;
+                                appearance: none;
+                                height: 8px;
+                                border-radius: 4px;
+                                background: rgba(255, 255, 255, 0.1);
+                                outline: none;
+                            }
+
+                            .range-slider::-webkit-slider-thumb {
+                                -webkit-appearance: none;
+                                appearance: none;
+                                width: 18px;
+                                height: 18px;
+                                border-radius: 50%;
+                                background: var(--color-primary);
+                                cursor: pointer;
+                                border: 2px solid white;
+                                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                                margin-top: -5px;
+                            }
+
+                            .range-slider::-moz-range-thumb {
+                                width: 18px;
+                                height: 18px;
+                                border-radius: 50%;
+                                background: var(--color-primary);
+                                cursor: pointer;
+                                border: 2px solid white;
+                                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                            }
+
+                            .range-slider::-webkit-slider-runnable-track {
+                                height: 8px;
+                                border-radius: 4px;
+                            }
+
+                            .range-slider::-moz-range-track {
+                                height: 8px;
+                                border-radius: 4px;
+                                background: rgba(255, 255, 255, 0.1);
+                            }
+                        </style>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const slider = document.getElementById('price-range');
+                                const priceDisplay = document.getElementById('price-display');
+                                if (slider) {
+                                    function formatPrice(value) {
+                                        if (value >= 10000000) {
+                                            return '₹' + (value / 10000000).toFixed(1) + ' Cr';
+                                        } else if (value >= 100000) {
+                                            return '₹' + (value / 100000).toFixed(1) + ' L';
+                                        }
+                                        return '₹' + value.toLocaleString('en-IN');
+                                    }
+
+                                    function updateSlider() {
+                                        const min = parseFloat(slider.min);
+                                        const max = parseFloat(slider.max);
+                                        const val = parseFloat(slider.value);
+                                        const percentage = ((val - min) / (max - min)) * 100;
+                                        slider.style.background = `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${percentage}%, rgba(255,255,255,0.1) ${percentage}%, rgba(255,255,255,0.1) 100%)`;
+
+                                        // Update price display
+                                        if (priceDisplay) {
+                                            priceDisplay.textContent = formatPrice(min) + ' - ' + formatPrice(val);
+                                        }
+                                    }
+                                    slider.addEventListener('input', updateSlider);
+                                    updateSlider(); // Initial call
+                                }
+                            });
+                        </script>
                     </div>
                     <div class="w-full md:w-2/3 flex justify-end">
                         <button
@@ -122,12 +199,19 @@
                     <img alt="{{i.brand}} {{i.model}}"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         src="{{i.featured_image.url}}" />
-                    <div
-                        class="absolute top-4 right-4 bg-primary/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                        New</div>
+                    <div class="absolute top-3 left-3">
+                        {% if i.is_available %}
+                        <span
+                            class="bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">For
+                            Sale</span>
+                        {% else %}
+                        <span
+                            class="bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest shadow-xl">Sold</span>
+                        {% endif %}
+                    </div>
                     <button
-                        class="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/50 hover:bg-white text-white hover:text-black backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
-                        <span class="material-symbols-outlined text-lg">favorite</span>
+                        class="absolute bottom-4 right-4 w-10 h-10  flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
+
                     </button>
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
@@ -166,14 +250,56 @@
 
         </div>
         <div class="flex flex-col items-center gap-6">
-            <p class="text-white/40 text-xs font-medium uppercase tracking-widest">Showing 6 of 48 Vehicles</p>
-            <div class="w-full max-w-md h-1 bg-white/10 rounded-full overflow-hidden mb-2">
-                <div class="h-full w-1/8 bg-primary rounded-full"></div>
+            <p class="text-white/40 text-xs font-medium uppercase tracking-widest">
+                Page {{ all_cars.number }} of {{ all_cars.paginator.num_pages }}
+                ({{ all_cars.paginator.count }} Vehicles)
+            </p>
+
+            <!-- Pagination Controls -->
+            <div class="flex items-center gap-2">
+                <!-- Previous Button -->
+                {% if all_cars.has_previous %}
+                <a href="?page={{ all_cars.previous_page_number }}"
+                    class="w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-primary hover:border-primary text-white flex items-center justify-center transition-all">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
+                </a>
+                {% else %}
+                <span
+                    class="w-10 h-10 rounded-lg border border-white/5 bg-white/5 text-white/30 flex items-center justify-center cursor-not-allowed">
+                    <span class="material-symbols-outlined text-lg">chevron_left</span>
+                </span>
+                {% endif %}
+
+                <!-- Page Numbers -->
+                <div class="flex items-center gap-1">
+                    {% for num in all_cars.paginator.page_range %}
+                    {% if all_cars.number == num %}
+                    <span
+                        class="w-10 h-10 rounded-lg bg-primary text-white text-sm font-bold flex items-center justify-center">
+                        {{ num }}
+                    </span>
+                    {% elif num > all_cars.number|add:'-3' and num < all_cars.number|add:'3' %} <a
+                        href="?page={{ num }}"
+                        class="w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-primary hover:border-primary text-white text-sm font-bold flex items-center justify-center transition-all">
+                        {{ num }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                </div>
+
+                <!-- Next Button -->
+                {% if all_cars.has_next %}
+                <a href="?page={{ all_cars.next_page_number }}"
+                    class="w-10 h-10 rounded-lg border border-white/10 bg-white/5 hover:bg-primary hover:border-primary text-white flex items-center justify-center transition-all">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
+                </a>
+                {% else %}
+                <span
+                    class="w-10 h-10 rounded-lg border border-white/5 bg-white/5 text-white/30 flex items-center justify-center cursor-not-allowed">
+                    <span class="material-symbols-outlined text-lg">chevron_right</span>
+                </span>
+                {% endif %}
             </div>
-            <button
-                class="px-8 py-3 rounded-xl border border-white/10 hover:border-primary/50 text-white font-bold text-sm tracking-widest uppercase bg-white/5 hover:bg-white/10 transition-all">
-                Load More
-            </button>
         </div>
     </div>
 </main>
