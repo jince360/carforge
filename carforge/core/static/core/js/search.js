@@ -1,20 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Mobile Search Toggle Logic
-  const toggle = document.getElementById("search-toggle");
-  const modal = document.getElementById("search-modal");
-
-  if (toggle && modal) {
-    toggle.addEventListener("change", () => {
-      if (toggle.checked) {
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      } else {
-        modal.classList.remove("flex");
-        modal.classList.add("hidden");
-      }
-    });
-  }
-
   // Hero Carousel Logic
   const slides = document.querySelectorAll('.hero-slide');
   const indicators = document.querySelectorAll('.indicator');
@@ -146,3 +130,5 @@ document.addEventListener("DOMContentLoaded", () => {
     startInterval();
   }
 });
+
+

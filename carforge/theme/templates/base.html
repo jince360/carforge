@@ -6,32 +6,37 @@
      Premium vehicle showcase with search functionality
      =========================== -->
 <html class="dark" lang="en">
-  <head>
-    <!-- Character Encoding & Viewport Settings -->
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Velocita Auto - Cinematic Hero</title>
-    
-    <!-- Font Resources -->
-    <!-- Material Symbols for icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- Font Preconnect -->
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <!-- Google Fonts: Space Grotesk (Display) & Noto Sans (Body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 
-    <script defer src="{% static "core/js/search.js" %}"></script>
-    
-   {% tailwind_css %}
-    
-    <!-- Tailwind Configuration -->
-    
-    
-    <!-- Custom Styles -->
-    <!-- Utility classes: scrollbar removal, glass morphism panel, carousel, search modal -->
-    <style type="text/tailwindcss">
-      .no-scrollbar::-webkit-scrollbar {
+<head>
+  <!-- Character Encoding & Viewport Settings -->
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Velocita Auto - Cinematic Hero</title>
+
+  <!-- Font Resources -->
+  <!-- Material Symbols for icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <!-- Font Preconnect -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <!-- Google Fonts: Space Grotesk (Display) & Noto Sans (Body) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+
+  <script defer src="{% static 'core/js/search.js' %}"></script>
+
+  {% tailwind_css %}
+
+  <!-- Tailwind Configuration -->
+
+
+  <!-- Custom Styles -->
+  <!-- Utility classes: scrollbar removal, glass morphism panel, carousel, search modal -->
+  <style type="text/tailwindcss">
+    .no-scrollbar::-webkit-scrollbar {
         display: none;
       }
       .no-scrollbar {
@@ -44,21 +49,6 @@
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-      #search-toggle:checked ~ #search-modal {
-        display: flex;
-      }
-      body:has(#search-toggle:checked) {
-        overflow: hidden;
-      }
-      #mobile-menu-toggle:checked ~ .mobile-menu {
-        transform: translateX(0);
-      }
-      body:has(#mobile-menu-toggle:checked) {
-        overflow: hidden;
-      }
-      #mobile-menu-toggle:checked ~ .mobile-menu-overlay {
-        display: block;
-      }
       .hero-carousel-item {
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
@@ -69,71 +59,130 @@
         opacity: 1;
       }
     </style>
-  </head>
-  
-  <!-- Page Body -->
-  <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col overflow-x-hidden">
-    <!-- Hidden checkbox for mobile search modal toggle -->
-    <input class="hidden peer" id="search-toggle" type="checkbox"/>
-    <!-- Hidden checkbox for mobile menu toggle -->
-    <input class="hidden peer" id="mobile-menu-toggle" type="checkbox"/>
-    <!-- ===== HEADER SECTION ===== -->
-    <!-- Fixed navigation bar with logo and menu -->
-    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between whitespace-nowrap px-6 py-4 lg:px-12 b bg-black/20 backdrop-blur-md  ">
-      <div class="flex items-center gap-4 text-white">
-        <!-- Logo Section -->
-        <div class="h-6">
-            <a href="{% url "home" %}" class="cursor-pointer"><img src="{% static "core/images/logo/logo-white.png" %}" alt="Logo" class="h-full"></a>
-        </div>
-      </div>
-      
-      <!-- Navigation Menu (Desktop Only) -->
-      <nav class="hidden lg:flex flex-1 justify-end gap-8 items-center">
-        <div class="flex items-center gap-8 bg-black/20 backdrop-blur-md px-8 py-2 rounded-full border border-white/10">
-          <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="{% url "all_cars" %}">Inventory</a>
-          <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Services</a>
-          <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Finance</a>
-          <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">About Us</a>
-        </div>
-        <button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/25">
-          <span class="truncate">Contact Us</span>
-        </button>
-      </nav>
-      
-      <!-- Mobile Menu Toggle (Hidden on Desktop) -->
-      <label class="lg:hidden text-white cursor-pointer hover:text-primary transition-colors" for="mobile-menu-toggle">
-        <span class="material-symbols-outlined text-2xl">menu</span>
-      </label>
-    </header>
+  <!-- Regular CSS for JavaScript-controlled modals -->
+  <style>
+    /* Search Modal - shown via JavaScript */
+    body.search-modal-open #search-modal {
+      display: flex !important;
+    }
 
-    <!-- Mobile Menu Drawer -->
-    <div class="fixed inset-0 z-50 hidden peer-checked:flex lg:hidden flex-col bg-background-dark/95 backdrop-blur-lg transition-all duration-300 pt-4 px-6 sm:inset-auto sm:right-0 sm:top-0 sm:bottom-0 sm:w-80 sm:pt-4 sm:rounded-l-2xl">
-      <!-- Close Button Header -->
-      <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/10 px-3">
-        <h2 class="text-white text-xl font-bold">Menu</h2>
-        <label class="text-white/60 hover:text-white hover:bg-white/10 cursor-pointer p-2 rounded-lg transition-all active:scale-95" for="mobile-menu-toggle">
-          <span class="material-symbols-outlined text-2xl">close</span>
-        </label>
-      </div>
+    body.search-modal-open {
+      overflow: hidden;
+    }
 
-      <div class="flex flex-col gap-8 flex-1">
-        <!-- Mobile Navigation Links -->
-        <nav class="flex flex-col gap-4">
-          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Inventory</a>
-          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Services</a>
-          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">Finance</a>
-          <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all" href="#">About Us</a>
-        </nav>
+    /* Mobile Menu - shown via JavaScript */
+    body.mobile-menu-open #mobile-menu-drawer {
+      display: flex !important;
+    }
+
+    body.mobile-menu-open {
+      overflow: hidden;
+    }
+
+    body.mobile-menu-open .mobile-menu-overlay {
+      display: block !important;
+    }
+  </style>
+</head>
+
+<!-- Page Body -->
+
+<body class="font-display bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden">
+  <!-- ===== HEADER SECTION ===== -->
+  <!-- Fixed navigation bar with logo and menu -->
+  <header
+    class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between whitespace-nowrap px-6 py-4 lg:px-12 b bg-black/20 backdrop-blur-md  ">
+    <div class="flex items-center gap-4 text-white">
+      <!-- Logo Section -->
+      <div class="h-6">
+        <a href="{% url 'home' %}" class="cursor-pointer"><img src="{% static 'core/images/logo/logo-white.png' %}"
+            alt="Logo" class="h-full"></a>
       </div>
-      
-      <!-- Mobile Contact Button -->
-      <button class="w-full flex items-center justify-center h-12 rounded-xl bg-primary hover:bg-primary/90 transition-all text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/25 mb-8 active:scale-95">
-        Contact Us
+    </div>
+
+    <!-- Navigation Menu (Desktop Only) -->
+    <nav class="hidden lg:flex flex-1 justify-end gap-8 items-center">
+      <div class="flex items-center gap-8 bg-black/20 backdrop-blur-md px-8 py-2 rounded-full border border-white/10">
+        <a class="text-white text-sm font-medium hover:text-primary transition-colors"
+          href="{% url 'all_cars' %}">Inventory</a>
+        <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Services</a>
+        <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">Finance</a>
+        <a class="text-white text-sm font-medium hover:text-primary transition-colors" href="#">About Us</a>
+      </div>
+      <button
+        class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/25">
+        <span class="truncate">Contact Us</span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu Toggle (Hidden on Desktop) -->
+    <button class="lg:hidden text-white cursor-pointer hover:text-primary transition-colors"
+      onclick="toggleMobileMenu()" aria-label="Open menu">
+      <span class="material-symbols-outlined text-2xl">menu</span>
+    </button>
+  </header>
+
+  <!-- Mobile Menu Drawer -->
+  <div id="mobile-menu-drawer"
+    class="fixed inset-0 z-50 hidden lg:hidden flex-col bg-background-dark/95 backdrop-blur-lg transition-all duration-300 pt-4 px-6 sm:inset-auto sm:right-0 sm:top-0 sm:bottom-0 sm:w-80 sm:pt-4 sm:rounded-l-2xl">
+    <!-- Close Button Header -->
+    <div class="flex items-center justify-between mb-6 pb-6 border-b border-white/10 px-3">
+      <h2 class="text-white text-xl font-bold">Menu</h2>
+      <button
+        class="text-white/60 hover:text-white hover:bg-white/10 cursor-pointer p-2 rounded-lg transition-all active:scale-95"
+        onclick="toggleMobileMenu()" aria-label="Close menu">
+        <span class="material-symbols-outlined text-2xl">close</span>
       </button>
     </div>
 
-    <!-- Mobile Menu Overlay (closes menu when clicked on medium/large screens) -->
-    <label class="hidden sm:hidden lg:hidden peer-checked:fixed peer-checked:inset-0 z-30 bg-black/40 cursor-pointer" for="mobile-menu-toggle"></label>
+    <div class="flex flex-col gap-8 flex-1">
+      <!-- Mobile Navigation Links -->
+      <nav class="flex flex-col gap-4">
+        <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all"
+          href="#">Inventory</a>
+        <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all"
+          href="#">Services</a>
+        <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all"
+          href="#">Finance</a>
+        <a class="text-white text-lg font-semibold hover:text-primary hover:bg-white/5 px-3 py-2 rounded-lg transition-all"
+          href="#">About Us</a>
+      </nav>
+    </div>
 
-    {% block content %}
-    {% endblock  %}
+    <!-- Mobile Contact Button -->
+    <button
+      class="w-full flex items-center justify-center h-12 rounded-xl bg-primary hover:bg-primary/90 transition-all text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/25 mb-8 active:scale-95">
+      Contact Us
+    </button>
+  </div>
+
+  <!-- Mobile Menu Overlay (closes menu when clicked) -->
+  <div class="mobile-menu-overlay hidden fixed inset-0 z-40 bg-black/40 cursor-pointer lg:hidden"
+    onclick="toggleMobileMenu()"></div>
+
+  {% block content %}
+  {% endblock %}
+
+  <!-- Mobile Menu and Search Modal Toggle Scripts -->
+  <script>
+    // Toggle Mobile Menu
+    function toggleMobileMenu() {
+      document.body.classList.toggle('mobile-menu-open');
+    }
+
+    // Toggle Search Modal
+    function toggleSearchModal() {
+      document.body.classList.toggle('search-modal-open');
+    }
+
+    // Close modals on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.body.classList.remove('mobile-menu-open');
+        document.body.classList.remove('search-modal-open');
+      }
+    });
+  </script>
+</body>
+
+</html>

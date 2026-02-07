@@ -34,14 +34,19 @@
                     <!-- Carousel -->
                     <div class="flex justify-center">
                         <div id="thumbnail-carousel" class="flex  gap-3 overflow-x-auto py-2 px-1 scrollbar-hide snap-x"
-                        style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;">
-                        {% for i in car.car_images.all %}
-                        <div class="thumbnail-item flex-none w-24 md:w-32 aspect-[4/3] rounded-xl overflow-hidden border-2 border-white/20 hover:border-primary cursor-pointer snap-start transition-all"
-                            onclick="swapMainImage(this)">
-                            <img alt="Car View" class="w-full h-full object-cover" src="{{i.image.url}}" />
+                            style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;">
+                            <div class="thumbnail-item flex-none w-24 md:w-32 aspect-[4/3] rounded-xl overflow-hidden border-2 border-white/20 hover:border-primary cursor-pointer snap-start transition-all"
+                                onclick="swapMainImage(this)">
+                                <img alt="Car View" class="w-full h-full object-cover"
+                                    src="{{car.featured_image.url}}" />
+                            </div>
+                            {% for i in car.car_images.all %}
+                            <div class="thumbnail-item flex-none w-24 md:w-32 aspect-[4/3] rounded-xl overflow-hidden border-2 border-white/20 hover:border-primary cursor-pointer snap-start transition-all"
+                                onclick="swapMainImage(this)">
+                                <img alt="Car View" class="w-full h-full object-cover" src="{{i.image.url}}" />
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div>
                     </div>
                     <!-- Right Arrow -->
                     <button id="carousel-next"
@@ -211,7 +216,7 @@
                     </div>
                     <ul class="space-y-3">
                         {% if car.car_features %}
-                            {% for i in car.car_features.all %}
+                        {% for i in car.car_features.all %}
                         <li class="flex items-start gap-3 text-sm text-white/80">
                             <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
                             {{i.name}}
@@ -285,8 +290,6 @@
     </div>
 </main>
 
-
-</body>
 
 <script>
     // Click to swap main image

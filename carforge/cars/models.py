@@ -209,6 +209,12 @@ class Car(models.Model):
     class Meta:
         verbose_name = "Car"
         verbose_name_plural = "Cars"
+
+    def save(self, *args, **kwargs):
+        if self.model:
+            self.model = self.model.strip()
+            self.model = self.model.title()
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"{self.brand.name} - {self.model} - {self.identification_number}"

@@ -69,7 +69,8 @@
     <div class="hidden lg:block w-full max-w-[1100px] mb-8">
       <div class="glass-panel p-2 rounded-2xl shadow-2xl shadow-black/40 bg-background-dark border border-white/10">
         <!-- Search Form with Multiple Filters -->
-        <form class="flex items-center divide-x divide-white/10">
+        <form class="flex items-center divide-x divide-white/10" action="{% url 'search' %}">
+          {% csrf_token %}
           <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors rounded-l-xl">
             <!-- Model Filter -->
             <label class="flex flex-col text-left">
@@ -80,9 +81,10 @@
               <select
                 class="w-full bg-transparent border-none text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
                 <option class="text-black" disabled="" selected="" value="">Select Model</option>
-                <option class="text-black" value="model-s">Model S Plaid</option>
-                <option class="text-black" value="taycan">Porsche Taycan</option>
-                <option class="text-black" value="etron">Audi e-tron GT</option>
+                {% for i in search_models %}
+                <option class="text-black" value="{{i.model}}">{{i.brand__name}} {{i.model}}</option>
+                {% endfor %}
+
               </select>
             </label>
           </div>
@@ -97,26 +99,29 @@
               <select
                 class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
                 <option class="text-black" disabled="" selected="" value="">All Locations</option>
-                <option class="text-black" value="ny">New York, NY</option>
-                <option class="text-black" value="la">Los Angeles, CA</option>
-                <option class="text-black" value="mia">Miami, FL</option>
+                {% for i in search_cities %}
+                <option class="text-black" value="{{i.city}}">{{i.city}}</option>
+                {% endfor %}
+
               </select>
             </label>
           </div>
+
 
           <!-- Price Range Filter -->
           <div class="flex-1 px-4 py-3 group hover:bg-white/5 transition-colors">
             <label class="flex flex-col text-left">
               <span class="flex items-center gap-2 text-[10px] font-bold text-white/50 uppercase tracking-wider mb-1">
-                <span class="material-symbols-outlined text-[14px]">attach_money</span>
-                Price Range
+                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                Year
               </span>
               <select
                 class="w-full bg-transparent border-none p-0 text-white font-medium focus:ring-0 cursor-pointer appearance-none text-sm">
-                <option class="text-black" disabled="" selected="" value="">Max Price</option>
-                <option class="text-black" value="50k">$50,000</option>
-                <option class="text-black" value="100k">$100,000</option>
-                <option class="text-black" value="200k">$200,000+</option>
+                <option class="text-black" disabled="" selected="" value="">Year</option>
+                {% for i in year %}
+                <option class="text-black" value="{{i.year}}">{{i.year}}</option>
+                {% endfor %}
+
               </select>
             </label>
           </div>
@@ -130,15 +135,15 @@
               </span>
               <input
                 class="w-full bg-transparent border-none p-0 text-white font-medium placeholder:text-white/30 focus:ring-0 text-sm"
-                placeholder="e.g. Matte Black" type="text" />
+                placeholder="e.g. Matte Black" type="text" name="search" />
             </label>
           </div>
 
           <!-- Search Submit Button -->
           <div class="px-3 py-1">
             <button
-              class="h-12 w-12 flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-lg shadow-primary/20"
-              type="button">
+              class="h-12 w-12 flex items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-lg shadow-primary/20 cursor-pointer"
+              type="submit">
               <span class="material-symbols-outlined">search</span>
             </button>
           </div>
@@ -149,34 +154,37 @@
     <!-- CTA Button -->
     <button
       class="group flex items-center gap-2 text-white border-b border-white pb-1 hover:text-primary hover:border-primary transition-colors">
-      <span class="text-sm font-bold uppercase tracking-widest">Explore Collection</span>
+      <span class="text-sm font-bold uppercase tracking-widest"><a href="{% url "all_cars" %}">Explore
+          Collection</a></span>
       <span
         class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
     </button>
   </div>
 
   <div class="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-30">
-    <label
+    <button
       class="flex items-center justify-center w-14 h-14 bg-primary text-white rounded-full shadow-2xl shadow-primary/60 active:scale-90 transition-transform cursor-pointer"
-      for="search-toggle">
+      onclick="toggleSearchModal()" aria-label="Open search">
       <span class="material-symbols-outlined text-2xl">search</span>
-    </label>
+    </button>
   </div>
 
   <div
-    class="hidden peer-checked:flex fixed inset-0 z-[100] flex-col bg-background-dark/98 backdrop-blur-2xl transition-all duration-300 overflow-y-auto"
+    class="hidden fixed inset-0 z-[100] flex-col bg-background-dark/98 backdrop-blur-2xl transition-all duration-300 overflow-y-auto"
     id="search-modal">
     <div class="p-6 flex flex-col min-h-full">
       <div class="flex justify-end mb-12">
-        <label class="text-white/60 hover:text-white cursor-pointer p-2" for="search-toggle">
+        <button class="text-white/60 hover:text-white cursor-pointer p-2" onclick="toggleSearchModal()"
+          aria-label="Close search">
           <span class="material-symbols-outlined text-4xl">close</span>
-        </label>
+        </button>
       </div>
       <div class="text-center mb-10">
         <h3 class="text-white text-3xl font-bold uppercase tracking-widest">Find Your Match</h3>
         <p class="text-white/40 text-sm mt-2">Filter our luxury inventory</p>
       </div>
-      <form class="flex flex-col gap-6 max-w-md mx-auto w-full">
+      <form class="flex flex-col gap-6 max-w-md mx-auto w-full" action="{% url 'search' %}">
+        {% csrf_token %}
         <div class="space-y-6">
           <div class="space-y-6">
             <div class="border-b border-white/10 pb-4">
@@ -187,8 +195,9 @@
               <select
                 class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
                 <option class="text-black" value="">Select Model</option>
-                <option class="text-black" value="model-s">Model S Plaid</option>
-                <option class="text-black" value="taycan">Porsche Taycan</option>
+                {% for i in search_models %}
+                <option class="text-black" value="{{i.model}}">{{i.brand__name}} {{i.model}}</option>
+                {% endfor %}
               </select>
             </div>
             <div class="border-b border-white/10 pb-4">
@@ -199,29 +208,23 @@
               <select
                 class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
                 <option class="text-black" value="">All Locations</option>
-                <option class="text-black" value="ny">New York, NY</option>
+                {% for i in search_cities %}
+                <option class="text-black" value="{{i.city}}">{{i.city}}</option>
+                {% endfor %}
               </select>
             </div>
+
             <div class="border-b border-white/10 pb-4">
               <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                <span class="material-symbols-outlined text-base">category</span>
-                Body Type
+                <span class="material-symbols-outlined text-base">calendar_today</span>
+                Year
               </label>
               <select
                 class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                <option class="text-black" value="">Any Type</option>
-                <option class="text-black" value="coupe">Coupe</option>
-              </select>
-            </div>
-            <div class="border-b border-white/10 pb-4">
-              <label class="flex items-center gap-3 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">
-                <span class="material-symbols-outlined text-base">attach_money</span>
-                Price Range
-              </label>
-              <select
-                class="w-full bg-transparent border-none p-0 text-white text-xl font-medium focus:ring-0 appearance-none">
-                <option class="text-black" value="">Max Price</option>
-                <option class="text-black" value="100k">$100,000</option>
+                <option class="text-black" value="">Year</option>
+                {% for i in year %}
+                <option class="text-black" value="{{i.year}}">{{i.year}}</option>
+                {% endfor %}
               </select>
             </div>
             <div class="border-b border-white/10 pb-4">
@@ -231,12 +234,12 @@
               </label>
               <input
                 class="w-full bg-transparent border-none p-0 text-white text-xl font-medium placeholder:text-white/20 focus:ring-0"
-                placeholder="e.g. Matte Black" type="text" />
+                placeholder="e.g. Matte Black" type="text" name="search" />
             </div>
           </div>
           <button
             class="mt-8 flex w-full h-16 cursor-pointer items-center justify-center rounded-xl bg-primary hover:bg-primary/90 transition-all text-white shadow-xl shadow-primary/30"
-            type="button">
+            type="submit">
             <span class="text-sm font-bold uppercase tracking-widest">Find Vehicle</span>
           </button>
       </form>
@@ -381,7 +384,8 @@
 
 
           </div>
-          <a href="{% url "cars" i.id %}" class="text-center w-full py-2.5 mt-4 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all">View
+          <a href="{% url "cars" i.id %}"
+            class="text-center w-full py-2.5 mt-4 rounded-lg border border-white/10 text-white text-[9px] font-bold uppercase tracking-[0.2em] group-hover:bg-primary group-hover:border-primary transition-all">View
             Details</a>
         </div>
       </div>
@@ -438,8 +442,4 @@
 </script>
 
 
-
-</body>
-
-</html>
 {% endblock %}
