@@ -214,6 +214,9 @@ class Car(models.Model):
         if self.model:
             self.model = self.model.strip()
             self.model = self.model.title()
+        if self.city:
+            self.city = self.city.strip()
+            self.city = self.city.title()
         super().save(*args, **kwargs)
     
     def __str__(self):

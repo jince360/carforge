@@ -10,7 +10,6 @@
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-green-400: oklch(79.2% 0.209 151.711);
-    --color-slate-900: oklch(20.8% 0.042 265.755);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
@@ -64,8 +63,7 @@
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
     --color-primary: #2b8cee;
-    --color-background-light: #f6f7f8;
-    --color-background-dark: #101922;
+    --color-background-dark: #0a1016;
     --font-display: "Space Grotesk", sans-serif;
     --font-body: "Noto Sans", sans-serif;
     --radius-full: 9999px;
@@ -314,6 +312,9 @@
   }
   .z-30 {
     z-index: 30;
+  }
+  .z-40 {
+    z-index: 40;
   }
   .z-50 {
     z-index: 50;
@@ -763,7 +764,7 @@
     background-color: var(--color-background-dark);
   }
   .bg-background-dark\/50 {
-    background-color: color-mix(in srgb, #101922 50%, transparent);
+    background-color: color-mix(in srgb, #0a1016 50%, transparent);
   }
   @supports (color: color-mix(in lab, red, red)) {
     .bg-background-dark\/50 {
@@ -771,7 +772,7 @@
     }
   }
   .bg-background-dark\/95 {
-    background-color: color-mix(in srgb, #101922 95%, transparent);
+    background-color: color-mix(in srgb, #0a1016 95%, transparent);
   }
   @supports (color: color-mix(in lab, red, red)) {
     .bg-background-dark\/95 {
@@ -779,15 +780,12 @@
     }
   }
   .bg-background-dark\/98 {
-    background-color: color-mix(in srgb, #101922 98%, transparent);
+    background-color: color-mix(in srgb, #0a1016 98%, transparent);
   }
   @supports (color: color-mix(in lab, red, red)) {
     .bg-background-dark\/98 {
       background-color: color-mix(in oklab, var(--color-background-dark) 98%, transparent);
     }
-  }
-  .bg-background-light {
-    background-color: var(--color-background-light);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -1158,9 +1156,6 @@
   .text-red-400 {
     color: var(--color-red-400);
   }
-  .text-slate-900 {
-    color: var(--color-slate-900);
-  }
   .text-transparent {
     color: transparent;
   }
@@ -1400,6 +1395,11 @@
     }
   }
   @media (hover: hover) {
+    .group-hover\:rotate-90:is(:where(.group):hover *) {
+      rotate: 90deg;
+    }
+  }
+  @media (hover: hover) {
     .group-hover\:border-primary:is(:where(.group):hover *) {
       border-color: var(--color-primary);
     }
@@ -1413,15 +1413,6 @@
     .group-hover\:opacity-100:is(:where(.group):hover *) {
       opacity: 100%;
     }
-  }
-  .peer-checked\:fixed:is(:where(.peer):checked ~ *) {
-    position: fixed;
-  }
-  .peer-checked\:inset-0:is(:where(.peer):checked ~ *) {
-    inset: calc(var(--spacing) * 0);
-  }
-  .peer-checked\:flex:is(:where(.peer):checked ~ *) {
-    display: flex;
   }
   .placeholder\:text-white\/20::placeholder {
     color: color-mix(in srgb, #fff 20%, transparent);
@@ -1451,6 +1442,16 @@
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:border-primary\/30:hover {
         border-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+      }
+    }
+  }
+  @media (hover: hover) {
+    .hover\:border-white\/40:hover {
+      border-color: color-mix(in srgb, #fff 40%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:border-white\/40:hover {
+        border-color: color-mix(in oklab, var(--color-white) 40%, transparent);
       }
     }
   }
@@ -1591,11 +1592,6 @@
   @media (width >= 40rem) {
     .sm\:left-4 {
       left: calc(var(--spacing) * 4);
-    }
-  }
-  @media (width >= 40rem) {
-    .sm\:hidden {
-      display: none;
     }
   }
   @media (width >= 40rem) {
@@ -1779,25 +1775,9 @@
     }
   }
   @media (width >= 64rem) {
-    .lg\:text-5xl {
-      font-size: var(--text-5xl);
-      line-height: var(--tw-leading, var(--text-5xl--line-height));
-    }
-  }
-  @media (width >= 64rem) {
     .lg\:text-9xl {
       font-size: var(--text-9xl);
       line-height: var(--tw-leading, var(--text-9xl--line-height));
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    .dark\:bg-background-dark {
-      background-color: var(--color-background-dark);
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    .dark\:text-white {
-      color: var(--color-white);
     }
   }
   .\[\&\:\:-webkit-scrollbar\]\:hidden::-webkit-scrollbar {
